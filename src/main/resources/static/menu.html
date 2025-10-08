@@ -8,6 +8,24 @@
 </head>
 <body>
   <h1>メニュー一覧</h1>
-  <div id="menu-list"></div>
+  
+  <!-- メニュー追加フォーム -->
+  <section class="form-section">
+    <h2>新しいメニューを追加</h2>
+    <form id="menu-form">
+      <input type="text" id="name" placeholder="メニュー名" required>
+      <input type="number" id="price" placeholder="価格（円）" required>
+      <textarea id="description" placeholder="説明" required></textarea>
+      <button type="submit">追加</button>
+    </form>
+  </section>
+  
+  <hr>
+  
+  <!-- メニュー一覧 -->
+  <section>
+    <h2>現在のメニュー</h2>
+    <div id="menu-list"></div>
+  </section>
 </body>
 </html>
