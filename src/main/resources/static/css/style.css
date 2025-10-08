@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+/* 全体のベース */
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #fff8f0;
+    color: #333;
+    margin: 0;
+    padding: 0 20px;
+}
+
+/* 見出し */
+h1 {
+    text-align: center;
+    color: #d2691e;
+    margin-top: 40px;
+    font-size: 2.5rem;
+}
+
+/* メニューリストのコンテナ */
+#menu-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin: 40px 0;
+}
+
+/* 各メニューアイテム */
+.menu-item {
+    background-color: #fff;
+    border: 2px solid #f0c090;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 220px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* ホバー時のアニメーション */
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.2);
+}
+
+/* メニュー名 */
+.menu-item h2 {
+    font-size: 1.5rem;
+    color: #a0522d;
+    margin-bottom: 10px;
+}
+
+/* メニュー価格 */
+.menu-item p.price {
+    font-weight: bold;
+    color: #ff4500;
+    margin-bottom: 10px;
+}
+
+/* メニュー説明 */
+.menu-item p.description {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* フッター */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    color: #888;
+    border-top: 1px solid #eee;
+    margin-top: 40px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+    #menu-list {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .menu-item {
+        width: 80%;
+    }
+}

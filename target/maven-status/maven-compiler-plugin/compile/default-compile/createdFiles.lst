@@ -1,0 +1,4 @@
+com\example\demo\RestaurantDemoApplication.class
+com\example\demo\restraurant\controller\MenuController.class
+com\example\demo\restraurant\entity\Menu.class
+com\example\demo\restraurant\repository\MenuRepository.class
