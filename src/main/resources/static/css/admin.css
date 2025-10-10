@@ -1,0 +1,115 @@
+@charset "UTF-8";
+
+/* 共通リセット */
+body {
+    font-family: 'Segoe UI', 'Yu Gothic', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+/* 見出し */
+h1 {
+    text-align: center;
+    color: #4a148c;
+}
+
+h2 {
+    color: #6a1b9a;
+    margin-bottom: 10px;
+}
+
+/* セクション全体のカード風レイアウト */
+section {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* フォーム */
+#admin-form input,
+#admin-form textarea,
+#admin-form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* ボタン */
+#admin-form button {
+    background-color: #8e24aa;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#admin-form button:hover {
+    background-color: #6a1b9a;
+}
+
+/* メニュー一覧カード */
+#admin-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.menu-card {
+    background-color: #fafafa;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-card img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.menu-card button {
+    margin-top: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-card .edit-btn {
+    background-color: #fbc02d;
+    color: #fff;
+}
+
+.menu-card .delete-btn {
+    background-color: #e53935;
+    color: #fff;
+    margin-left: 5px;
+}
+
+.menu-card .edit-btn:hover {
+    background-color: #f9a825;
+}
+
+.menu-card .delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 600px) {
+    section {
+        margin: 15px;
+        padding: 15px;
+    }
+}

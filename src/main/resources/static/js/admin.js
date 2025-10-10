@@ -4,15 +4,45 @@ async function loadAdminMenus() {
   const res = await fetch(API);
   const menus = await res.json();
   const list = document.getElementById("admin-list");
-  list.innerHTML = menus.map(m => `
-    <div class="menu-item">
-      <h3>${m.name}</h3>
-      <img src="${m.imageUrl || ''}" style="max-width:120px;"><br>
-      <p>${m.description}</p>
-      <p>¥${m.price}</p>
-      <button onclick="deleteMenu(${m.id})">削除</button>
-    </div>
-  `).join("");
+  list.innerHTML = ""; // まず空にする
+
+  menus.forEach(m => {
+    // カードを作成
+    const card = document.createElement('div');
+    card.classList.add('menu-card');
+
+    // メニュー名
+    const h3 = document.createElement('h3');
+    h3.textContent = m.name;
+    card.appendChild(h3);
+
+    // 画像
+    if (m.imageUrl) {
+      const img = document.createElement('img');
+      img.src = m.imageUrl;
+      img.style.maxWidth = "120px";
+      card.appendChild(img);
+    }
+
+    // 説明
+    const pDesc = document.createElement('p');
+    pDesc.textContent = m.description;
+    card.appendChild(pDesc);
+
+    // 価格
+    const pPrice = document.createElement('p');
+    pPrice.textContent = `¥${m.price}`;
+    card.appendChild(pPrice);
+
+    // 削除ボタン
+    const btnDel = document.createElement('button');
+    btnDel.textContent = "削除";
+    btnDel.onclick = () => deleteMenu(m.id);
+    card.appendChild(btnDel);
+
+    // カードをリストに追加
+    list.appendChild(card);
+  });
 }
 
 async function handleAdminForm(e) {

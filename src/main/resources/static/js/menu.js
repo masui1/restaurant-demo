@@ -19,10 +19,10 @@ async function loadMenus() {
 
         list.innerHTML = menus.map(m =>
             `<div class="menu-item">
-                <h2>${m.name}</h2>
-                <p class="description">${m.description}</p>
-                <p class="price">¥${m.price.toLocaleString()}</p>
-                ${m.imageUrl ? `<img src="${m.imageUrl}" alt="${m.name}" width="120">` : ""}
+				<h3>${m.name}</h3>
+	            ${m.imageUrl ? `<img src="${m.imageUrl}" alt="${m.name}" width="120">` : ""}
+	            <p>¥${m.price.toLocaleString()}</p>
+	            <button onclick='showDetail(${JSON.stringify(m)})'>詳細を見る</button>
             </div>`
         ).join("");
 
@@ -106,3 +106,17 @@ window.addEventListener("DOMContentLoaded", () => {
     loadMenus();
     document.getElementById("menu-form").addEventListener("submit", handleFormSubmit);
 });
+
+function showDetail(menu) {
+	document.getElementById("detail-name").textContent = menu.name;
+	document.getElementById("detail-image").src = menu.imageUrl || '';
+	document.getElementById("detail-description").textContent = menu.description;
+	document.getElementById("detail-price").textContent = menu.price;
+	document.getElementById("detail-allergy").textContent = menu.allergy || "なし";
+	document.getElementById("menu-detail-modal").style.display = "block";
+}
+
+document.getElementById("close-modal").addEventListener("click", () => {
+	document.getElementById("menu-detail-modal").style.display = "none";
+});
+
