@@ -23,6 +23,7 @@ async function loadMenus() {
 	            ${m.imageUrl ? `<img src="${m.imageUrl}" alt="${m.name}" width="120">` : ""}
 	            <p>¥${m.price.toLocaleString()}</p>
 	            <button onclick='showDetail(${JSON.stringify(m)})'>詳細を見る</button>
+				<button onclick='addToCart(${m.id})'>カートに追加</button>
             </div>`
         ).join("");
 
@@ -119,4 +120,23 @@ function showDetail(menu) {
 document.getElementById("close-modal").addEventListener("click", () => {
 	document.getElementById("menu-detail-modal").style.display = "none";
 });
+
+let cart = [];
+
+function addToCart(menuId) {
+    fetch(`http://localhost:8080/api/menus/${menuId}`)
+        .then(res => {
+            if (!res.ok) throw new Error("メニュー取得失敗");
+            return res.json();
+        })
+        .then(menu => {
+            cart.push(menu);
+            alert(`${menu.name} をカートに追加しました`);
+            console.log("現在のカート:", cart);
+        })
+        .catch(err => {
+            console.error(err);
+            alert("カートに追加できませんでした");
+        });
+}
 
