@@ -1,4 +1,4 @@
-package com.example.demo.restaurant.config;
+package com.example.demo.config;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

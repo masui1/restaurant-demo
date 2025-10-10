@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>管理 - Café Sakura</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/admin.js" defer></script>
+</head>
+<body>
+  <h1>管理画面</h1>
+  <section id="login-status"></section>
+
+  <section>
+    <h2>メニュー追加（画像アップロード）</h2>
+    <form id="admin-form">
+      <input id="name" required placeholder="メニュー名"><br>
+      <input id="price" type="number" required placeholder="価格"><br>
+      <textarea id="description" placeholder="説明"></textarea><br>
+      <input id="image" type="file" accept="image/*"><br>
+      <button type="submit">追加</button>
+    </form>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>メニュー一覧（編集 / 削除）</h2>
+    <div id="admin-list"></div>
+  </section>
+</body>
+</html>
