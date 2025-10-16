@@ -17,13 +17,16 @@ public class Menu {
 	@Column(length=1000)
 	private String description;
 	private String imageUrl;
+	@Column(length = 255)
+	private String allergy;
 	
 	public Menu() {}
-	public Menu(String name, int price, String description, String imageUrl) {
+	public Menu(String name, int price, String description, String imageUrl, String allergy) {
 		this.name = name;
 		this.price = price;
 		this.description = description;
 		this.imageUrl = imageUrl;
+		this.allergy = allergy;
 	}
 
 	// getter/setter
@@ -36,4 +39,6 @@ public class Menu {
     public void setPrice(int price) { this.price = price; }
     public void setDescription(String description) { this.description = description; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public String getAllergy() { return allergy; }
+    public void setAllergy(String allergy) { this.allergy = allergy; }
 }

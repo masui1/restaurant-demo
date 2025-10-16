@@ -70,7 +70,7 @@ public class MenuController {
         if (image != null && !image.isEmpty()) {
             imageUrl = storage.store(image);
         }
-        Menu m = new Menu(dto.getName(), dto.getPrice(), dto.getDescription(), imageUrl);
+        Menu m = new Menu(dto.getName(), dto.getPrice(), dto.getDescription(), imageUrl, dto.getAllergy());
         return repo.save(m);
     }
 
