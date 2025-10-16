@@ -34,6 +34,11 @@ async function loadAdminMenus() {
     pPrice.textContent = `¥${m.price}`;
     card.appendChild(pPrice);
 
+	// アレルギー情報
+	const pAllergy = document.createElement('p');
+	pAllergy.textContent = `アレルギー: ${m.allergy || "なし"}`;
+	card.appendChild(pAllergy);
+
     // 削除ボタン
     const btnDel = document.createElement('button');
     btnDel.textContent = "削除";
@@ -50,10 +55,11 @@ async function handleAdminForm(e) {
   const name = document.getElementById("name").value;
   const price = document.getElementById("price").value;
   const description = document.getElementById("description").value;
+  const allergy = document.getElementById("allergy").value;
   const image = document.getElementById("image").files[0];
 
   const form = new FormData();
-  const menu = { name, price: parseInt(price), description };
+  const menu = { name, price: parseInt(price), description, allergy };
   form.append("menu", new Blob([JSON.stringify(menu)], { type: "application/json" }));
   if (image) form.append("image", image);
 
