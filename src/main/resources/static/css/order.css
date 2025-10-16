@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+/* 全体レイアウト */
+body {
+    font-family: "Noto Sans JP", sans-serif;
+    background-color: #faf7f2;
+    color: #333;
+    margin: 0;
+    padding: 2rem;
+}
+
+/* 見出し */
+h1 {
+    text-align: center;
+    color: #5a3e36;
+    margin-bottom: 2rem;
+}
+
+/* 注文履歴リスト全体 */
+#order-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* 各注文ブロック */
+.order {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* 注文ヘッダー（注文ID・日付） */
+.order h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0 0 0.5rem 0;
+}
+
+/* 合計金額 */
+.order p {
+    font-weight: bold;
+    color: #5a3e36;
+    margin: 0.3rem 0 0.8rem;
+}
+
+/* 商品一覧 */
+.order ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #eee;
+    padding-top: 0.5rem;
+}
+
+.order li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.order li:last-child {
+    border-bottom: none;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
+
+    .order {
+        padding: 1rem;
+    }
+
+    .order li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

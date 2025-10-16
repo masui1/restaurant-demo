@@ -8,21 +8,6 @@
 </head>
 <body>
   <h1>メニュー一覧</h1>
-  
-  
-  
-  <!-- メニュー追加フォーム -->
-  <section class="form-section">
-    <h2>新しいメニューを追加</h2>
-    <form id="menu-form">
-      <input type="text" id="name" placeholder="メニュー名" required>
-      <input type="number" id="price" placeholder="価格（円）" required>
-      <input id="description" placeholder="説明" required></input>
-	  <input type="file" id="image" accept="image/*">
-      <button type="submit">追加</button>
-    </form>
-  </section>
-  
   <hr>
   
   <!-- メニュー一覧 -->
@@ -51,6 +36,11 @@
 	<p>合計: \<span id="cart-total">0</span></p>
 	<button id="checkout-btn">注文する</button>
   </section>
+  
+  <!-- 注文履歴ページへのリンク -->
+  <div style="margin-bottom: 20px;">
+  <buttom onclick="location.href='order.html'">注文履歴を見る</buttom>
+  </div>
 
 </body>
 </html>
