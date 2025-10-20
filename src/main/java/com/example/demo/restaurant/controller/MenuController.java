@@ -43,6 +43,12 @@ public class MenuController {
                 .orElse(ResponseEntity.notFound().build());
     }
     
+    @GetMapping("/recommended")
+    public List<Menu> getRecommendedMenus() {
+        return repo.findByRecommendedTrue();
+    }
+
+    
     // 既存メニューに画像をアップロード
     @PostMapping("/{id}/upload")
     public ResponseEntity<Menu> uploadImage(@PathVariable Long id,

@@ -1,9 +1,10 @@
-// /restaurant-demo/src/main/resources/static/js/menu.js
 const API_URL = "http://localhost:8080/api/menus";
 
 let cart = [];
 
+// --------------------
 // メニューごとのカート個数を反映
+// --------------------
 function renderMenuCounts() {
     document.querySelectorAll(".menu-item").forEach(item => {
         const id = Number(item.dataset.id);
@@ -13,42 +14,61 @@ function renderMenuCounts() {
     });
 }
 
-// メニュー一覧を取得して表示
-async function loadMenus() {
-    const list = document.getElementById("menu-list");
-    if (!list) return;
-    list.innerHTML = "<p>読み込み中...</p>";
+// --------------------
+// メニューカードHTML生成（詳細・カートボタン付き）
+// --------------------
+function createMenuCard(menu) {
+    const c = cart.find(c => c.menu.id === menu.id);
+    return `
+    <div class="menu-item" data-id="${menu.id}">
+        <h3>${menu.name} <span class="cart-count">${c ? `(${c.quantity})` : ""}</span></h3>
+        ${menu.imageUrl ? `<img src="${menu.imageUrl}" style="width:100%;">` : ""}
+        <p>¥${menu.price.toLocaleString()}</p>
+        <button onclick='showDetail(${JSON.stringify(menu)})'>詳細を見る</button>
+        <button onclick='addToCart(${menu.id})'>カートに追加</button>
+    </div>`;
+}
 
+// --------------------
+// メニュー一覧描画
+// --------------------
+async function renderMenus() {
     try {
-        const res = await fetch(API_URL);
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const menus = await res.json();
+        const [menus, recommended] = await Promise.all([
+            fetch(`${API_URL}`).then(r => r.json()),
+            fetch(`${API_URL}/recommended`).then(r => r.json())
+        ]);
 
-        if (!menus.length) {
-            list.innerHTML = "<p>メニューはまだ登録されていません。</p>";
-            return;
+        const recommendedList = document.getElementById("recommended-list");
+        const menuList = document.getElementById("menu-list");
+
+        // おすすめメニュー
+        if (recommended.length > 0) {
+            recommendedList.innerHTML = recommended.map(createMenuCard).join("");
+        } else {
+            recommendedList.innerHTML = "<p>本日のおすすめはありません。</p>";
         }
 
-        list.innerHTML = menus.map(m => {
-            const c = cart.find(c => c.menu.id === m.id);
-            return `<div class="menu-item" data-id="${m.id}">
-                <h3>${m.name} <span class="cart-count">${c ? `(${c.quantity})` : ""}</span></h3>
-                ${m.imageUrl ? `<img src="${m.imageUrl}" alt="${m.name}" width="120">` : ""}
-                <p>¥${m.price.toLocaleString()}</p>
-                <button onclick='showDetail(${JSON.stringify(m)})'>詳細を見る</button>
-                <button onclick='addToCart(${m.id})'>カートに追加</button>
-            </div>`;
-        }).join("");
+        // 通常メニュー（おすすめ以外）
+        const normalMenus = menus.filter(m => !m.recommended);
+        if (normalMenus.length > 0) {
+            menuList.innerHTML = normalMenus.map(createMenuCard).join("");
+        } else {
+            menuList.innerHTML = "<p>通常メニューはありません。</p>";
+        }
 
         renderMenuCounts();
 
     } catch (err) {
         console.error(err);
-        if (list) list.innerHTML = `<p>メニューの読み込み中にエラーが発生しました。</p>`;
+        document.getElementById("recommended-list").innerHTML = "<p>読み込みエラー</p>";
+        document.getElementById("menu-list").innerHTML = "<p>読み込みエラー</p>";
     }
 }
 
+// --------------------
 // メニュー詳細モーダル表示
+// --------------------
 function showDetail(menu) {
     const modal = document.getElementById("menu-detail-modal");
     if (!modal) return;
@@ -60,7 +80,9 @@ function showDetail(menu) {
     modal.style.display = "block";
 }
 
-// カートに追加
+// --------------------
+// カート操作
+// --------------------
 function addToCart(menuId) {
     fetch(`${API_URL}/${menuId}`)
         .then(res => {
@@ -69,11 +91,9 @@ function addToCart(menuId) {
         })
         .then(menu => {
             const existing = cart.find(c => c.menu.id === menu.id);
-            if (existing) {
-                existing.quantity++;
-            } else {
-                cart.push({ menu, quantity: 1 });
-            }
+            if (existing) existing.quantity++;
+            else cart.push({ menu, quantity: 1 });
+
             alert(`${menu.name} をカートに追加しました`);
             renderCart();
             renderMenuCounts();
@@ -84,7 +104,15 @@ function addToCart(menuId) {
         });
 }
 
+function removeFromCart(menuId) {
+    cart = cart.filter(c => c.menu.id !== menuId);
+    renderCart();
+    renderMenuCounts();
+}
+
+// --------------------
 // カート描画
+// --------------------
 function renderCart() {
     const cartList = document.getElementById("cart-list");
     if (!cartList) return;
@@ -108,19 +136,11 @@ function renderCart() {
     document.getElementById("cart-total").textContent = total.toLocaleString();
 }
 
-// カートから削除
-function removeFromCart(menuId) {
-    cart = cart.filter(c => c.menu.id !== menuId);
-    renderCart();
-    renderMenuCounts();
-}
-
+// --------------------
 // 注文処理
+// --------------------
 async function handleCheckout() {
-    if (!cart.length) {
-        alert("カートが空です。");
-        return;
-    }
+    if (!cart.length) return alert("カートが空です。");
 
     const order = {
         customerName: "ゲスト",
@@ -141,36 +161,31 @@ async function handleCheckout() {
         });
 
         if (!res.ok) throw new Error("注文送信に失敗");
-
         const saved = await res.json();
         alert(`注文が確定しました！（注文ID: ${saved.id}）`);
 
-        // カートクリア
         cart = [];
-        localStorage.removeItem("cart");
         renderCart();
         renderMenuCounts();
-
     } catch (err) {
         console.error(err);
         alert("注文送信に失敗しました。");
     }
 }
 
-// DOM読み込み後に安全にイベント登録
+// --------------------
+// DOM読み込み後
+// --------------------
 window.addEventListener("DOMContentLoaded", () => {
-    loadMenus();
+    renderMenus();
 
-    // モーダル閉じる
     const closeBtn = document.getElementById("close-modal");
     if (closeBtn) {
         closeBtn.addEventListener("click", () => {
-            const modal = document.getElementById("menu-detail-modal");
-            if (modal) modal.style.display = "none";
+            document.getElementById("menu-detail-modal").style.display = "none";
         });
     }
 
-    // 注文ボタン
     const checkoutBtn = document.getElementById("checkout-btn");
     if (checkoutBtn) {
         checkoutBtn.addEventListener("click", handleCheckout);

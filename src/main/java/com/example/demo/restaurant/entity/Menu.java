@@ -19,6 +19,8 @@ public class Menu {
 	private String imageUrl;
 	@Column(length = 255)
 	private String allergy;
+	@Column(nullable = false)
+	private Boolean recommended = false;
 	
 	public Menu() {}
 	public Menu(String name, int price, String description, String imageUrl, String allergy) {
@@ -41,4 +43,6 @@ public class Menu {
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public String getAllergy() { return allergy; }
     public void setAllergy(String allergy) { this.allergy = allergy; }
+    public Boolean isRecommended() { return recommended ; }
+    public void setRecommended(boolean recommended) { this.recommended = recommended;}
 }
