@@ -46,6 +46,7 @@ public class AdminMenuController {
                 imageUrl = storage.store(image);
             }
             Menu m = new Menu(dto.getName(), dto.getPrice(), dto.getDescription(), imageUrl, dto.getAllergy());
+            m.setRecommended(dto.isRecommended());
             return ResponseEntity.ok(repo.save(m));
         } catch (Exception e) {
             e.printStackTrace();

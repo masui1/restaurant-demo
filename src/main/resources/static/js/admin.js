@@ -56,10 +56,11 @@ async function handleAdminForm(e) {
   const price = document.getElementById("price").value;
   const description = document.getElementById("description").value;
   const allergy = document.getElementById("allergy").value;
+  const recommended = document.getElementById("recommended").checked;
   const image = document.getElementById("image").files[0];
 
   const form = new FormData();
-  const menu = { name, price: parseInt(price), description, allergy };
+  const menu = { name, price: parseInt(price), description, allergy, recommended };
   form.append("menu", new Blob([JSON.stringify(menu)], { type: "application/json" }));
   if (image) form.append("image", image);
 
