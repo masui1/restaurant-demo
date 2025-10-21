@@ -1,0 +1,87 @@
+/* /restaurant-demo/src/main/resources/static/css/admin-order.css */
+@charset "UTF-8";
+
+/* 共通リセット */
+body {
+    font-family: 'Segoe UI', 'Yu Gothic', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+/* 見出し */
+h1, h2 {
+    text-align: center;
+    color: #4a148c;
+}
+
+/* 注文カード */
+.order-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.order-card h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+}
+
+.order-card p {
+    margin: 5px 0;
+}
+
+/* 詳細ボタン */
+.order-card button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: #8e24aa;
+    color: #fff;
+    transition: 0.3s;
+}
+
+.order-card button:hover {
+    background-color: #6a1b9a;
+}
+
+/* ページングボタン */
+#prev-page, #next-page {
+    padding: 8px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4a148c;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#prev-page:hover, #next-page:hover {
+    background-color: #6a1b9a;
+}
+
+/* ページ情報表示 */
+#page-info {
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    .order-card {
+        padding: 10px;
+    }
+    #prev-page, #next-page {
+        padding: 5px 10px;
+        margin: 3px;
+    }
+}
