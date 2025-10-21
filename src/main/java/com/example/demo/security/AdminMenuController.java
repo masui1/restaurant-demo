@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,6 +54,38 @@ public class AdminMenuController {
             return ResponseEntity.internalServerError().build();
         }
     }
+    
+    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<Menu> updateMenu(@PathVariable Long id,
+                                           @RequestPart("menu") String menuJson,
+                                           @RequestPart(value = "image", required = false) MultipartFile image) {
+        try {
+            Menu existing = repo.findById(id).orElse(null);
+            if (existing == null) return ResponseEntity.notFound().build();
+
+            Menu dto = objectMapper.readValue(menuJson, Menu.class);
+
+            // 画像更新
+            if (image != null && !image.isEmpty()) {
+                String imageUrl = storage.store(image);
+                existing.setImageUrl(imageUrl);
+            }
+
+            // 他の項目を上書き
+            existing.setName(dto.getName());
+            existing.setPrice(dto.getPrice());
+            existing.setDescription(dto.getDescription());
+            existing.setAllergy(dto.getAllergy());
+            existing.setRecommended(dto.isRecommended());
+
+            return ResponseEntity.ok(repo.save(existing));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

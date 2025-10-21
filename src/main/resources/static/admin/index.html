@@ -9,22 +9,44 @@
 <body>
   <h1>管理画面</h1>
 
+  <!-- 🔽 管理メニューリンク -->
+  <nav style="margin-bottom: 20px;">
+    <a href="/admin/order.html" class="nav-link">注文履歴管理</a>
+  </nav>
+
   <section>
     <h2>メニュー追加（画像アップロード）</h2>
     <form id="admin-form">
       <input id="name" required placeholder="メニュー名"><br>
       <input id="price" type="number" required placeholder="価格"><br>
       <textarea id="description" placeholder="説明"></textarea><br>
-	  <input id="allergy" placeholder="アレルギー情報"><br>
+      <input id="allergy" placeholder="アレルギー情報"><br>
       <input id="image" type="file" accept="image/*"><br>
-	  <label>
-	      <input id="recommended" type="checkbox"> 本日のおすすめに設定
-	  </label><br>
+      <label>
+        <input id="recommended" type="checkbox"> 本日のおすすめに設定
+      </label><br>
       <button type="submit">追加</button>
     </form>
   </section>
 
   <hr>
+  
+  <!-- 編集モーダル -->
+  <div id="edit-modal" class="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:20px; border-radius:10px; width:400px;">
+      <h3>メニュー編集</h3>
+      <form id="edit-form">
+        <input id="edit-name" required placeholder="メニュー名"><br>
+        <input id="edit-price" type="number" required placeholder="価格"><br>
+        <textarea id="edit-description" placeholder="説明"></textarea><br>
+        <input id="edit-allergy" placeholder="アレルギー情報"><br>
+        <label><input id="edit-recommended" type="checkbox"> 本日のおすすめ</label><br>
+        <input id="edit-image" type="file" accept="image/*"><br>
+        <button type="submit">更新</button>
+        <button type="button" id="close-edit-modal">閉じる</button>
+      </form>
+    </div>
+  </div>
 
   <section>
     <h2>メニュー一覧（編集 / 削除）</h2>
