@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>予約フォーム</title>
+<script src="js/reservation.js" defer></script>
+</head>
+<body>
+	<h1>来店・テイクアウト予約</h1>
+	<form id="reservation-form">
+		<input id="name" placeholder="お名前"><br>
+		<input id="phone" placeholder="電話番号" required><br>
+		<select id="type">
+			<option value="DINE_IN">店内飲食</option>
+			<option value="TAKEOUT">テイクアウト</option>
+		</select><br>
+		<input id="datetime" type="datetime-local" required><br>
+		<input id="people" type="number" min="1" value="1"><br>
+		<textarea  id="note" placeholder="備考"></textarea ><br>
+		<button type="submit">予約する</button>
+	</form>
+</body>
+</html>
