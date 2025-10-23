@@ -33,8 +33,10 @@
     </div>
   </section>
   
+  <hr>
+  
   <!-- カート表示 -->
-  <section>
+  <section style="text-align:center; margin-top:30px;">
 	<h2>カート</h2>
 	<div id="cart-list">
 		<p>カートは空です。</p>
@@ -43,9 +45,39 @@
 	<button id="checkout-btn">注文する</button>
   </section>
   
+  <hr>
+  
+  <!-- 来店・テイクアウト予約ボタン -->
+  <section style="text-align:center; margin-top:30px;">
+	<h2>来店・テイクアウト予約</h2>
+	<p>お席のご予約やテイクアウトの事前注文はこちらから</p>
+	<button onclick="location.href='reservation.html'" style="
+		background-color:#4caf50;
+		color:white;
+		padding:10px 20px;
+		border:none;
+		border-radius:8px;
+		cursor:pointer;
+		font-size:16px;
+	">予約フォームへ
+	</button>
+  </section>
+  
+  <hr>
+  
   <!-- 注文履歴ページへのリンク -->
-  <div style="margin-bottom: 20px;">
-  <buttom onclick="location.href='order.html'">注文履歴を見る</buttom>
+  <div style="text-align:center; margin-top:30px;">
+	 <h2>注文履歴</h2>
+	 <p>ご注文の確認はこちらから</p>
+	 <buttom onclick="location.href='order.html'" style="
+		  	background-color:#4caf50;
+		  	color:white;
+		  	padding:10px 20px;
+		  	border:none;
+		  	border-radius:8px;
+		  	cursor:pointer;
+		  	font-size:16px;
+	 ">注文履歴を見る</buttom>
   </div>
 
 </body>
