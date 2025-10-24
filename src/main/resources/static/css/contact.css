@@ -1,1 +1,66 @@
 @charset "UTF-8";
+
+/* 全体リセット */
+body {
+    font-family: 'Yu Gothic', sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+/* 見出し */
+h1 {
+    text-align: center;
+    color: #4a148c;
+    margin-bottom: 20px;
+}
+
+/* フォーム全体 */
+form {
+    background-color: #fff;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* 入力・テキストエリア */
+form input, 
+form textarea, 
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* ボタン */
+form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #8e24aa;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+form button:hover {
+    background-color: #6a1b9a;
+}
+
+/* 確認メッセージ */
+#contact-message {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #4caf50;
+}
