@@ -1,5 +1,6 @@
 package com.example.demo.restaurant.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -9,15 +10,13 @@ import com.example.demo.restaurant.entity.Contact;
 @Service
 public class ContactMailService {
 
-    private final JavaMailSender mailSender;
-
-    public ContactMailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
+    @Autowired(required = false)
+    private JavaMailSender mailSender; // ← Beanがなくても起動できるように変更
 
     public void sendAdminNotification(Contact contact) {
-        if (isDevelopment() || mailSender == null) {
-            System.out.println("⚠️ メール設定なしまたは開発環境のため、送信をスキップしました。");
+        // JavaMailSender がない場合はスキップ
+        if (mailSender == null) {
+            System.out.println("⚠️ JavaMailSender が未設定のため、メール送信をスキップしました");
             return;
         }
 
@@ -35,10 +34,5 @@ public class ContactMailService {
         } catch (Exception e) {
             System.err.println("⚠️ メール送信に失敗しました: " + e.getMessage());
         }
-    }
-
-    private boolean isDevelopment() {
-        String profile = System.getProperty("spring.profiles.active");
-        return profile != null && profile.equals("dev");
     }
 }
