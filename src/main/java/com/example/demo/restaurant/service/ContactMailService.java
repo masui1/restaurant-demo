@@ -1,6 +1,5 @@
 package com.example.demo.restaurant.service;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.example.demo.restaurant.entity.Contact;
 
 @Service
-@ConditionalOnProperty(value = "spring.mail.host", matchIfMissing = false)
 public class ContactMailService {
 
     private final JavaMailSender mailSender;
@@ -18,9 +16,8 @@ public class ContactMailService {
     }
 
     public void sendAdminNotification(Contact contact) {
-        // 開発中はメール送信をスキップ
-        if (isDevelopment()) {
-            System.out.println("⚠️ 開発環境: メール送信をスキップしました");
+        if (isDevelopment() || mailSender == null) {
+            System.out.println("⚠️ メール設定なしまたは開発環境のため、送信をスキップしました。");
             return;
         }
 
