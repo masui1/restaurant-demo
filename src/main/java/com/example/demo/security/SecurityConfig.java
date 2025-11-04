@@ -26,8 +26,17 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    "/login.html",        // ← ログインページを許可
+                    "/uploads/**",
+                    "/css/**",
+                    "/js/**",
+                    "/menu.html",
+                    "/",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**"
+                ).permitAll()
                 .requestMatchers("/admin/**", "/admin/api/**").hasRole("ADMIN")
-                .requestMatchers("/uploads/**", "/css/**", "/js/**", "/menu.html", "/", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -41,4 +50,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
