@@ -1,6 +1,6 @@
 // js/orders.js
 async function loadOrders() {
-  const res = await fetch("http://localhost:8080/api/orders");
+  const res = await fetch("/api/orders",);
   if (!res.ok) {
     document.getElementById("order-list").innerHTML = "<p>注文履歴の取得に失敗しました。</p>";
     return;

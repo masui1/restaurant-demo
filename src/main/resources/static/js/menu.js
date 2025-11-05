@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:8080/api/menus";
+const API_URL = "/api/menus";
+
 
 let cart = [];
 
@@ -154,7 +155,7 @@ async function handleCheckout() {
     };
 
     try {
-        const res = await fetch("http://localhost:8080/api/orders", {
+        const res = await fetch("/api/orders", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(order)
