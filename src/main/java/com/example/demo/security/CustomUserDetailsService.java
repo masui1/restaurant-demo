@@ -18,10 +18,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = repo.findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException("Not found"));
+        
         return org.springframework.security.core.userdetails.User
-            .withUsername(user.getUsername())
-            .password(user.getPassword())
-            .authorities(user.getRole())
-            .build();
+    	    .withUsername(user.getUsername())
+    	    .password(user.getPassword())
+    	    .authorities(java.util.Collections.emptyList()) // ここで完全に権限なし
+    	    .build();
     }
 }

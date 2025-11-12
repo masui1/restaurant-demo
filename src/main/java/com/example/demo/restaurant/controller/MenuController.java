@@ -1,5 +1,6 @@
 package com.example.demo.restaurant.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,16 +18,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.restaurant.entity.Menu;
 import com.example.demo.restaurant.repository.MenuRepository;
-import com.example.demo.restaurant.storage.FileStorageService;
+import com.example.demo.restaurant.service.SupabaseStorageService;
 
 @RestController
 @RequestMapping("/api/menus")
 @CrossOrigin
 public class MenuController {
+
     private final MenuRepository repo;
-    private final FileStorageService storage;
-    
-    public MenuController(MenuRepository repo, FileStorageService storage) {
+    private final SupabaseStorageService storage;
+
+    public MenuController(MenuRepository repo, SupabaseStorageService storage) {
         this.repo = repo;
         this.storage = storage;
     }
@@ -35,66 +37,87 @@ public class MenuController {
     public List<Menu> getMenus() {
         return repo.findAll();
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<Menu> getOne(@PathVariable Long id) {
         return repo.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    
+
     @GetMapping("/recommended")
     public List<Menu> getRecommendedMenus() {
         return repo.findByRecommendedTrue();
     }
 
-    
-    // 既存メニューに画像をアップロード
+    // 既存メニューに画像をアップロードしてSupabaseに保存
     @PostMapping("/{id}/upload")
     public ResponseEntity<Menu> uploadImage(@PathVariable Long id,
                                             @RequestPart("image") MultipartFile image) {
         Optional<Menu> opt = repo.findById(id);
-        if (opt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        if (opt.isEmpty()) return ResponseEntity.notFound().build();
 
         Menu menu = opt.get();
 
         if (image != null && !image.isEmpty()) {
-            String imageUrl = storage.store(image);
-            menu.setImageUrl(imageUrl);
-            repo.save(menu);
+            try {
+                String imageUrl = storage.uploadFile(image); // Supabaseにアップロード
+                menu.setImageUrl(imageUrl);
+                repo.save(menu);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.internalServerError().build();
+            }
         }
 
         return ResponseEntity.ok(menu);
     }
 
+    // 新規メニュー作成
     @PostMapping(consumes = {"multipart/form-data"})
-    public Menu create(@RequestPart("menu") Menu dto,
-                       @RequestPart(value = "image", required = false) MultipartFile image) {
+    public ResponseEntity<Menu> create(@RequestPart("menu") Menu dto,
+                                       @RequestPart(value = "image", required = false) MultipartFile image) {
         String imageUrl = null;
         if (image != null && !image.isEmpty()) {
-            imageUrl = storage.store(image);
+            try {
+                imageUrl = storage.uploadFile(image); // Supabaseにアップロード
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.internalServerError().build();
+            }
         }
-        Menu m = new Menu(dto.getName(), dto.getPrice(), dto.getDescription(), imageUrl, dto.getAllergy());
-        return repo.save(m);
+
+        Menu menu = new Menu(dto.getName(), dto.getPrice(), dto.getDescription(), imageUrl, dto.getAllergy());
+        menu.setRecommended(dto.isRecommended());
+        return ResponseEntity.ok(repo.save(menu));
     }
 
+    // メニュー更新
     @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
     public ResponseEntity<Menu> update(@PathVariable Long id,
                                        @RequestPart("menu") Menu dto,
                                        @RequestPart(value = "image", required = false) MultipartFile image) {
         Optional<Menu> opt = repo.findById(id);
         if (opt.isEmpty()) return ResponseEntity.notFound().build();
-        Menu m = opt.get();
-        m.setName(dto.getName());
-        m.setPrice(dto.getPrice());
-        m.setDescription(dto.getDescription());
+
+        Menu menu = opt.get();
+        menu.setName(dto.getName());
+        menu.setPrice(dto.getPrice());
+        menu.setDescription(dto.getDescription());
+        menu.setAllergy(dto.getAllergy());
+        menu.setRecommended(dto.isRecommended());
+
         if (image != null && !image.isEmpty()) {
-            String url = storage.store(image);
-            m.setImageUrl(url);
+            try {
+                String imageUrl = storage.uploadFile(image); // Supabaseにアップロード
+                menu.setImageUrl(imageUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.internalServerError().build();
+            }
         }
-        return ResponseEntity.ok(repo.save(m));
+
+        return ResponseEntity.ok(repo.save(menu));
     }
 
     @DeleteMapping("/{id}")

@@ -36,7 +36,7 @@ public class SecurityConfig {
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 ).permitAll()
-                .requestMatchers("/admin/**", "/admin/api/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**", "/admin/api/**").authenticated()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

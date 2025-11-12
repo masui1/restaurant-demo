@@ -1,5 +1,6 @@
 package com.example.demo.security;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -38,30 +39,42 @@ public class AdminMenuController {
     }
 
     @PostMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<Menu> addMenu(@RequestPart("menu") String menuJson,
-                                        @RequestPart(value = "image", required = false) MultipartFile image) {
+    public ResponseEntity<Menu> addMenu(
+            @RequestPart("menu") String menuJson,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+
         try {
             Menu dto = objectMapper.readValue(menuJson, Menu.class);
 
             String imageUrl = null;
             if (image != null && !image.isEmpty()) {
-                imageUrl = storage.uploadFile(image);
+                imageUrl = storage.uploadFile(image); // Supabase にアップロード
             }
 
-            Menu m = new Menu(dto.getName(), dto.getPrice(), dto.getDescription(), imageUrl, dto.getAllergy());
-            m.setRecommended(dto.isRecommended());
-            return ResponseEntity.ok(repo.save(m));
+            Menu menu = new Menu(
+                    dto.getName(),
+                    dto.getPrice(),
+                    dto.getDescription(),
+                    imageUrl,
+                    dto.getAllergy()
+            );
+            menu.setRecommended(dto.isRecommended());
 
-        } catch (Exception e) {
+            Menu saved = repo.save(menu);
+            return ResponseEntity.ok(saved);
+
+        } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
-    public ResponseEntity<Menu> updateMenu(@PathVariable Long id,
-                                           @RequestPart("menu") String menuJson,
-                                           @RequestPart(value = "image", required = false) MultipartFile image) {
+    public ResponseEntity<Menu> updateMenu(
+            @PathVariable Long id,
+            @RequestPart("menu") String menuJson,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+
         try {
             Menu existing = repo.findById(id).orElse(null);
             if (existing == null) return ResponseEntity.notFound().build();
@@ -69,7 +82,7 @@ public class AdminMenuController {
             Menu dto = objectMapper.readValue(menuJson, Menu.class);
 
             if (image != null && !image.isEmpty()) {
-                String imageUrl = storage.uploadFile(image);
+                String imageUrl = storage.uploadFile(image); // Supabase にアップロード
                 existing.setImageUrl(imageUrl);
             }
 
@@ -79,9 +92,10 @@ public class AdminMenuController {
             existing.setAllergy(dto.getAllergy());
             existing.setRecommended(dto.isRecommended());
 
-            return ResponseEntity.ok(repo.save(existing));
+            Menu saved = repo.save(existing);
+            return ResponseEntity.ok(saved);
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }

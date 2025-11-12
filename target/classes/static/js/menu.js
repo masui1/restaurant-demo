@@ -1,6 +1,5 @@
 const API_URL = "/api/menus";
 
-
 let cart = [];
 
 // --------------------
@@ -16,7 +15,7 @@ function renderMenuCounts() {
 }
 
 // --------------------
-// メニューカードHTML生成（詳細・カートボタン付き）
+// メニューカードHTML生成
 // --------------------
 function createMenuCard(menu) {
     const c = cart.find(c => c.menu.id === menu.id);
@@ -43,23 +42,16 @@ async function renderMenus() {
         const recommendedList = document.getElementById("recommended-list");
         const menuList = document.getElementById("menu-list");
 
-        // おすすめメニュー
-        if (recommended.length > 0) {
-            recommendedList.innerHTML = recommended.map(createMenuCard).join("");
-        } else {
-            recommendedList.innerHTML = "<p>本日のおすすめはありません。</p>";
-        }
+        recommendedList.innerHTML = recommended.length
+            ? recommended.map(createMenuCard).join("")
+            : "<p>本日のおすすめはありません。</p>";
 
-        // 通常メニュー（おすすめ以外）
         const normalMenus = menus.filter(m => !m.recommended);
-        if (normalMenus.length > 0) {
-            menuList.innerHTML = normalMenus.map(createMenuCard).join("");
-        } else {
-            menuList.innerHTML = "<p>通常メニューはありません。</p>";
-        }
+        menuList.innerHTML = normalMenus.length
+            ? normalMenus.map(createMenuCard).join("")
+            : "<p>通常メニューはありません。</p>";
 
         renderMenuCounts();
-
     } catch (err) {
         console.error(err);
         document.getElementById("recommended-list").innerHTML = "<p>読み込みエラー</p>";
@@ -68,7 +60,7 @@ async function renderMenus() {
 }
 
 // --------------------
-// メニュー詳細モーダル表示
+// メニュー詳細モーダル
 // --------------------
 function showDetail(menu) {
     const modal = document.getElementById("menu-detail-modal");
@@ -120,7 +112,7 @@ function renderCart() {
 
     if (!cart.length) {
         cartList.innerHTML = "<p>カートは空です。</p>";
-        document.getElementById("cart-total").textContent = "0";
+        document.getElementById("cart-total").textContent = "0円";
         return;
     }
 
